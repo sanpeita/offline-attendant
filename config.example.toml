@@ -1,0 +1,41 @@
+# Copy to config.toml and edit. Nothing here is secret; nothing here is remote.
+# The bind address is validated as loopback at load time and a non-loopback
+# value is refused, because "it stays on this machine" is the product.
+
+engine = "~/llama.cpp/build/bin/llama-server"
+model  = "~/models/llm-jp-3-150m-instruct3-q8_0.gguf"
+
+host  = "127.0.0.1"
+port  = 8080
+threads = 4
+
+# Mandatory on a 942 MB board. Without an explicit -c the server fails to
+# start with "cannot fit parameters into available device memory".
+ctx = 512
+
+# Tokens, not seconds: ~9.5 tok/s on this board, so 48 tokens ≈ 5 s.
+n_predict = 48
+
+# 12 s observed cold start; 30 s leaves room for a slow SD card.
+cold_start_s = 30.0
+
+# How long the menu may wait for one line. The answer is capped in length
+# rather than the clock, so a slow day degrades to a shorter line, not a
+# missing one.
+line_budget_s = 5.0
+
+runtime_dir = "runtime"
+
+# What the model is asked to do. Keep each instruction to one line; the
+# model is 150M parameters and does not follow multi-step instructions.
+[lines]
+greeting   = "受付係として、来訪者へ向けた短い挨拶を一文だけ書いてください。"
+selected   = "作業を選んだ人へ向けた短い相づちを一文だけ書いてください。"
+closing    = "作業場の終了時刻なので、短い締めの一文を書いてください。"
+
+# Said when inference is unavailable, slow, or produced nothing usable.
+# These are shown verbatim, so they must be display-safe already.
+[fallback]
+greeting   = "いらっしゃいませ。ごゆっくりどうぞ。"
+selected   = "では、始めましょう。"
+closing    = "本日はここまでです。お気をつけて。"

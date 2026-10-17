@@ -1,0 +1,12 @@
+# Never commit weights or a live config.
+*.gguf
+models/
+config.toml
+runtime/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

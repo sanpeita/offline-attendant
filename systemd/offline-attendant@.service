@@ -1,0 +1,36 @@
+[Unit]
+Description=offline-attendant (local LLM front-desk line)
+After=network.target
+# No network is required. This unit is ordered after network.target only so
+# that it does not race the display stack on boot.
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=%h/offline-attendant
+ExecStart=/usr/bin/python3 %h/offline-attendant/attendant.py health
+
+# Restart=no is a design decision, not an oversight.
+#
+# If this process dies, the menu keeps working and falls back to the fixed
+# line. Restarting it automatically would mean the device silently takes its
+# ~207 MiB back in the middle of someone's shift, possibly repeatedly, with
+# nobody watching. A quiet attendant that reports the truth is worth more
+# than an undead one that competes for memory with whatever the shop is
+# actually doing.
+Restart=no
+
+# Soft cap only. MemoryMax invites the OOM killer on a 942 MB board; this
+# value is peak RSS (~207 MiB) with headroom.
+MemoryHigh=300M
+MemoryAccounting=yes
+
+# Belt and braces: the process already binds loopback only.
+PrivateNetwork=no
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/offline-attendant/runtime
+
+[Install]
+WantedBy=default.target
