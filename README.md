@@ -114,7 +114,7 @@ So: import in-process, and if you do spawn anything, `stdin=DEVNULL` with fixed 
 
 The build knowledge used here — the `-j1` requirement, the `-latomic` link-order trap, `--jinja` for the Japanese template, the 12-second cold start, the 3.096-second resident line — comes from my own private lab notes from earlier in October 2026, where `llama.cpp` was first brought up on this specific board and resident mode was measured against one-process-per-request.
 
-This repository was written during the Hacktoberfest 2026 challenge window (October 16–18, 2026). **No code was copied from those notes**; what crossed over is measurements and lessons, reproduced in [`docs/`](docs/) with their conditions attached. The prior work was never published, so nothing here derives from a third party's project.
+This repository was written during the Hacktoberfest 2026 challenge window (October 17–18, 2026). **No code was copied from those notes**; what crossed over is measurements and lessons, reproduced in [`docs/`](docs/) with their conditions attached. The prior work was never published, so nothing here derives from a third party's project.
 
 ## Credits
 
