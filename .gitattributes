@@ -1,0 +1,6 @@
+# This program ships to Linux (and the Pi's tooling rejects CRLF), so keep the
+# repository's text files as LF regardless of the OS that cloned it.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gguf binary
